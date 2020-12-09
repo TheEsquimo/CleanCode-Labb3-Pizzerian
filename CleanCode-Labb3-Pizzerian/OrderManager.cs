@@ -24,5 +24,18 @@ namespace CleanCode_Labb3_Pizzerian
             }
             return cost;
         }
+
+        public string GetOrderContent()
+        {
+            //foreach (Pizza pizza in menu.GetPizzas())
+            //{
+            //    Console.Write(pizza.Name + ":");
+            //    foreach (Topping topping in pizza.Toppings)
+            //    {
+            //        Console.Write(" " + topping.Name + ",");
+            //    }
+            //    Console.Write(" - " + pizza.Cost + "kr\n");
+            //}
+        }
     }
 }
