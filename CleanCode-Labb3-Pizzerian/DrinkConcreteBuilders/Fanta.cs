@@ -2,23 +2,24 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CleanCode_Labb3_Pizzerian
+namespace CleanCode_Labb3_Pizzerian.Models
 {
-    public class HamTopping : ToppingBuilder
+    public class Fanta : DrinkBuilder
     {
         public override void SetId()
         {
-            topping.Id = 8;
+            drink.Id = 6;
         }
 
         public override void SetName()
         {
-            topping.Name = "Ham";
+            drink.Name = "Fanta";
         }
 
         public override void SetCost()
         {
-            topping.Cost = 10;
+            drink.Cost = 20;
         }
+
     }
 }

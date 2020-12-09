@@ -4,21 +4,21 @@ using System.Text;
 
 namespace CleanCode_Labb3_Pizzerian
 {
-    class MargheritaBuilder : PizzaBuilder
+    class HawaiiBuilder : PizzaBuilder
     {
         public override void SetId()
         {
-            pizza.Id = 1;
+            pizza.Id = 2;
         }
 
         public override void SetName()
         {
-            pizza.Name = "Margherita";
+            pizza.Name = "Hawaii";
         }
 
         public override void SetCost()
         {
-            pizza.Cost = 85;
+            pizza.Cost = 95;
         }
 
         public override void ApplyToppings()
@@ -29,10 +29,19 @@ namespace CleanCode_Labb3_Pizzerian
             toppingMaker = new ToppingMaker(new CheeseTopping());
             toppingMaker.BuildTopping();
             var cheese = toppingMaker.GetTopping();
+            toppingMaker = new ToppingMaker(new HamTopping());
+            toppingMaker.BuildTopping();
+            var ham = toppingMaker.GetTopping();
+            toppingMaker = new ToppingMaker(new PineappleTopping());
+            toppingMaker.BuildTopping();
+            var pineapple = toppingMaker.GetTopping();
+
             List<Topping> toppings = new List<Topping>()
             {
                 tomatoSauce,
-                cheese
+                cheese,
+                ham,
+                pineapple
             };
         }
     }

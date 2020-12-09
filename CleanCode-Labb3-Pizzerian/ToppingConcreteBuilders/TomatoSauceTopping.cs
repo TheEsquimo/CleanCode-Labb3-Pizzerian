@@ -4,21 +4,21 @@ using System.Text;
 
 namespace CleanCode_Labb3_Pizzerian
 {
-    public class HamTopping : ToppingBuilder
+    public class TomatoSauceTopping : ToppingBuilder
     {
         public override void SetId()
         {
-            topping.Id = 8;
+            topping.Id = 19;
         }
 
         public override void SetName()
         {
-            topping.Name = "Ham";
+            topping.Name = "Tomato Sauce";
         }
 
         public override void SetCost()
         {
-            topping.Cost = 10;
+            topping.Cost = 0;
         }
     }
 }
