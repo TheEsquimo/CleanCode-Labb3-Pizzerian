@@ -34,6 +34,8 @@ namespace CleanCode_Labb3_Pizzerian
                 tomatoSauce,
                 cheese
             };
+
+            pizza.Toppings = toppings;
         }
     }
 }

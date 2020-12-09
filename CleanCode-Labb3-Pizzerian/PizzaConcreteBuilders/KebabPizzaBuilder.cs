@@ -56,6 +56,8 @@ namespace CleanCode_Labb3_Pizzerian
                 icebergLettuce,
                 kebabSauce
             };
+
+            pizza.Toppings = toppings;
         }
     }
 }

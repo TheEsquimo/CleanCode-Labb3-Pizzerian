@@ -43,6 +43,8 @@ namespace CleanCode_Labb3_Pizzerian
                 ham,
                 pineapple
             };
+
+            pizza.Toppings = toppings;
         }
     }
 }

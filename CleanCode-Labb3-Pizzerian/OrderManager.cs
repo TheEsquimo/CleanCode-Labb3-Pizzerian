@@ -14,5 +14,15 @@ namespace CleanCode_Labb3_Pizzerian
 
         public Order CurrentOrder { get { return currentOrder; } }
         private Order currentOrder;
+
+        public double CalculateOrderTotalCost(Order order)
+        {
+            double cost = 0;
+            foreach (IOrdable ordable in order.Content)
+            {
+                cost += ordable.Cost;
+            }
+            return cost;
+        }
     }
 }

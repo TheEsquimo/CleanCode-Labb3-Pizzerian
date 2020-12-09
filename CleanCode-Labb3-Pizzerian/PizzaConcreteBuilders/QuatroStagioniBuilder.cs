@@ -54,6 +54,8 @@ namespace CleanCode_Labb3_Pizzerian
                 mushrooms,
                 artichoke
             };
+
+            pizza.Toppings = toppings;
         }
     }
 }
