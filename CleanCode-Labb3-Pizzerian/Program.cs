@@ -6,7 +6,7 @@ namespace CleanCode_Labb3_Pizzerian
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+
         }
     }
 }

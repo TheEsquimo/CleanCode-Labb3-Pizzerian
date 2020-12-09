@@ -6,4 +6,10 @@
     <RootNamespace>CleanCode_Labb3_Pizzerian</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="CleanCode-Labb3-PizzerianTests\**" />
+    <EmbeddedResource Remove="CleanCode-Labb3-PizzerianTests\**" />
+    <None Remove="CleanCode-Labb3-PizzerianTests\**" />
+  </ItemGroup>
+  
 </Project>
