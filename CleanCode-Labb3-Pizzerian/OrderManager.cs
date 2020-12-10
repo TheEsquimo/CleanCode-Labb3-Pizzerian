@@ -25,17 +25,37 @@ namespace CleanCode_Labb3_Pizzerian
             return cost;
         }
 
-        public string GetOrderContent()
+        public void AddItemToOrder(IOrdable ordable)
         {
-            //foreach (Pizza pizza in menu.GetPizzas())
-            //{
-            //    Console.Write(pizza.Name + ":");
-            //    foreach (Topping topping in pizza.Toppings)
-            //    {
-            //        Console.Write(" " + topping.Name + ",");
-            //    }
-            //    Console.Write(" - " + pizza.Cost + "kr\n");
-            //}
+            if (currentOrder == null)
+                CreateNewOrder();
+            currentOrder.Content.Add(ordable);
+        }
+
+
+        public void RemoveItemFromOrder(IOrdable ordable)
+        {
+            if (currentOrder != null)
+                currentOrder.Content.Remove(ordable);
+        }
+
+        //public string GetOrderContent()
+        //{
+        //    foreach (Pizza pizza in menu.GetPizzas())
+        //    {
+        //        Console.Write(pizza.Name + ":");
+        //        foreach (Topping topping in pizza.Toppings)
+        //        {
+        //            Console.Write(" " + topping.Name + ",");
+        //        }
+        //        Console.Write(" - " + pizza.Cost + "kr\n");
+        //    }
+        //}
+
+        private void CreateNewOrder()
+        {
+            currentOrder = new Order();
+            currentOrder.Content = new List<IOrdable>();
         }
     }
 }
