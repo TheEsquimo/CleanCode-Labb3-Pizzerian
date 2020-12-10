@@ -16,6 +16,12 @@ namespace CleanCode_Labb3_PizzerianTestsNUnit
             orderManager = OrderManager.OrderManagerInstance;
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            orderManager.CurrentOrder.Content = null;
+        }
+
         [Test]
         public void TestCalculateTotalCost()
         {
@@ -55,10 +61,27 @@ namespace CleanCode_Labb3_PizzerianTestsNUnit
             Pizza pizzaTwo = new Pizza() { Cost = 100 };
             orderManager.AddItemToOrder(pizza);
             orderManager.AddItemToOrder(pizzaTwo);
-            Assert.AreEqual(true, orderManager.CurrentOrder.Content.Contains(pizza));
+            Assert.Contains(pizza, orderManager.CurrentOrder.Content);
             orderManager.RemoveItemFromOrder(pizza);
-            Assert.AreEqual(true, !orderManager.CurrentOrder.Content.Contains(pizza));
-            Assert.AreEqual(true, orderManager.CurrentOrder.Content.Contains(pizzaTwo));
+            CollectionAssert.DoesNotContain(orderManager.CurrentOrder.Content, pizza);
+            Assert.Contains(pizzaTwo, orderManager.CurrentOrder.Content);
+        }
+
+        [Test]
+        public void TestCantAddToppingWithoutPizza()
+        {
+            Topping topping = new Topping();
+            orderManager.AddItemToOrder(topping);
+            CollectionAssert.DoesNotContain(orderManager.CurrentOrder.Content, topping);
+        }
+
+        [Test]
+        public void TestCanAddToppingWithPizza()
+        {
+            orderManager.AddItemToOrder(new Pizza());
+            Topping topping = new Topping();
+            orderManager.AddItemToOrder(topping);
+            Assert.Contains(topping, orderManager.CurrentOrder.Content);
         }
     }
 }
