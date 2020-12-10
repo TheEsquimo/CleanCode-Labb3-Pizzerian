@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CleanCode_Labb3_Pizzerian.Models
+namespace CleanCode_Labb3_Pizzerian
 {
     public class Fanta : DrinkBuilder
     {
