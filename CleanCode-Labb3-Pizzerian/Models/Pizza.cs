@@ -10,5 +10,6 @@ namespace CleanCode_Labb3_Pizzerian
         public string Name { get; set; }
         public double Cost { get; set; }
         public List<Topping> Toppings { get; set; }
+        public List<Topping> ExtraToppings { get; set; }
     }
 }
