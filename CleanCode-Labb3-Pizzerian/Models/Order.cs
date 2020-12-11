@@ -8,7 +8,7 @@ namespace CleanCode_Labb3_Pizzerian
     {
         public enum OrderStatus { Canceled, Active, Completed }
         
-        public int ID { get; set; }
+        public int Id { get; set; }
         public DateTime CreationTime { get; set; }
         public OrderStatus Status { get; set; }
         public List<IOrdable> Content { get; set; }

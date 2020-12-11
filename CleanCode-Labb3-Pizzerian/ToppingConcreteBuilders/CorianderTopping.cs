@@ -8,7 +8,7 @@ namespace CleanCode_Labb3_Pizzerian
     {
         public override void SetId()
         {
-            topping.Id = 17;
+            topping.Id = 16;
         }
 
         public override void SetName()

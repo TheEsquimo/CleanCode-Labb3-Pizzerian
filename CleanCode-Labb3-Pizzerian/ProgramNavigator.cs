@@ -49,8 +49,7 @@ namespace CleanCode_Labb3_Pizzerian
         {
             Console.Clear();
             Console.WriteLine("1: Make Order");
-            Console.WriteLine("2: Display Active Orders");
-            Console.WriteLine("3: Set Order Status");
+            Console.WriteLine("2: Set Order Status");
             userInput = GetUserInput("1", "2", "3");
             switch (UserInput)
             {
@@ -61,11 +60,6 @@ namespace CleanCode_Labb3_Pizzerian
 
                 case "2":
                     Console.Clear();
-                    ActiveOrdersDisplay();
-                    break;
-
-                case "3":
-                    Console.Clear();
                     SetOrderStatusMenu();
                     break;
             }
@@ -73,21 +67,166 @@ namespace CleanCode_Labb3_Pizzerian
 
         private void OrderMenu()
         {
-            Console.WriteLine("=====ORDER MENU=====");
-            Console.ReadKey();
+            Console.Clear();
+            PrintMenu();
+            PrintCurrentOrder();
+            Console.WriteLine("1: Add Item to Order");
+            Console.WriteLine("2: Remove Item from Order");
+            Console.WriteLine("3: Clear Order");
+            Console.WriteLine("4: Place Order");
+            Console.WriteLine("5: Back to Main Menu");
+            userInput = GetUserInput("1", "2", "3", "4", "5");
+            switch (UserInput)
+            {
+                case "1":
+                    Console.Clear();
+                    AddItemToOrder();
+                    break;
+
+                case "2":
+                    Console.Clear();
+                    RemoveItemFromOrder();
+                    break;
+
+                case "3":
+                    Console.Clear();
+                    ClearOrder();
+                    break;
+
+                case "4":
+                    Console.Clear();
+                    PlaceOrder();
+                    break;
+            }
         }
 
-        private void ActiveOrdersDisplay()
+        private void PrintMenu()
+        {
+            Console.WriteLine("=====ORDER MENU=====");
+            string menuString = "";
+            foreach (IOrdable ordable in menu.Ordables)
+                menuString += OrdablesToString.OrdableToString(ordable);
+            Console.WriteLine(menuString);
+        }
+
+        private void PrintCurrentOrder()
+        {
+            Console.WriteLine("=====CURRENT ORDER=====");
+            Console.WriteLine(orderManager.GetOrderContentString(orderManager.CurrentOrder));
+        }
+
+        private void PrintActiveOrders()
         {
             Console.WriteLine("=====ORDERS=====");
             Console.WriteLine(orderManager.GetActiveOrders());
             Console.ReadKey();
         }
 
+        private void AddItemToOrder()
+        {
+            PrintMenu();
+            PrintCurrentOrder();
+            Console.WriteLine("Enter ID to add corresponding item");
+            List<string> validInput = new List<string>();
+            for (int i = 1; i <= menu.Ordables.Count; i++)
+            {
+                validInput.Add(i.ToString());
+            }
+            userInput = GetUserInput(validInput.ToArray());
+
+            IOrdable chosenOrdable = menu.Ordables.
+                Where(ordable => ordable.Id == int.Parse(userInput)).
+                First();
+
+            orderManager.AddItemToOrder(chosenOrdable);
+            OrderMenu();
+        }
+
+        private void RemoveItemFromOrder()
+        {
+            if (orderManager.CurrentOrder != null && orderManager.CurrentOrder.Content.Count > 0)
+            {
+                PrintCurrentOrder();
+                Console.WriteLine("Enter ID to remove corresponding item");
+                List<string> validInput = new List<string>();
+                foreach (IOrdable ordable in orderManager.CurrentOrder.Content)
+                {
+                    validInput.Add(ordable.Id.ToString());
+                }
+                userInput = GetUserInput(validInput.ToArray());
+
+                IOrdable chosenOrdable = menu.Ordables.
+                    Where(ordable => ordable.Id == int.Parse(userInput)).
+                    First();
+
+                orderManager.RemoveItemFromOrder(chosenOrdable);
+            }
+            OrderMenu();
+        }
+
+        private void ClearOrder()
+        {
+            orderManager.ClearOrder();
+        }
+
+        private void PlaceOrder()
+        {
+            Order placedOrder = orderManager.PlaceOrder();
+            if (placedOrder != null)
+            {
+                Console.WriteLine("=====ORDER SUMMARY=====");
+                Console.WriteLine(orderManager.GetOrderString(placedOrder));
+            }
+            Console.ReadKey();
+        }
+
         private void SetOrderStatusMenu()
         {
+            if (orderManager.Orders != null && orderManager.Orders.Count > 0)
+            {
+                Order[] activeOrders = orderManager.Orders.
+                    Where(order => order.Status == Order.OrderStatus.Active).ToArray();
+
+                if (activeOrders.Length > 0)
+                {
+                    Console.WriteLine("=====CHOOSE ORDER TO MODIFY=====");
+                    PrintActiveOrders();
+                    Console.WriteLine("Enter ID to modify corresponding order's status");
+
+                    List<string> validInput = new List<string>();
+                    foreach (Order order in activeOrders)
+                    {
+                        validInput.Add(order.Id.ToString());
+                    }
+                    userInput = GetUserInput(validInput.ToArray());
+
+                    Order chosenOrder = activeOrders.
+                        Where(order => order.Id == int.Parse(userInput)).
+                        First();
+
+                    SetOrderStatus(chosenOrder);
+                }
+            }
+        }
+
+        private void SetOrderStatus(Order chosenOrder)
+        {
             Console.WriteLine("=====SET ORDER STATUS=====");
-            Console.ReadKey();
+            Console.WriteLine("1: Set Order to Completed");
+            Console.WriteLine("2: Set Order to Cancelled");
+            Console.WriteLine("3: Back to Main Menu");
+
+            userInput = GetUserInput("1", "2", "3");
+            switch (userInput)
+            {
+                case "1":
+                    orderManager.SetOrderStatus(chosenOrder, Order.OrderStatus.Completed);
+                    break;
+
+                case "2":
+                    orderManager.SetOrderStatus(chosenOrder, Order.OrderStatus.Canceled);
+                    break;
+            }
         }
     }
 }

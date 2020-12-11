@@ -20,6 +20,7 @@ namespace CleanCode_Labb3_Pizzerian
         public List<Order> Orders { get { return orders; } }
         private Order currentOrder;
         private List<Order> orders;
+        private int orderIdCounter = 1;
 
         public double CalculateOrderTotalCost(Order order)
         {
@@ -42,13 +43,28 @@ namespace CleanCode_Labb3_Pizzerian
         public void RemoveItemFromOrder(IOrdable ordable)
         {
             if (currentOrder != null)
+            {
                 currentOrder.Content.Remove(ordable);
+            }
         }
 
-        public void PlaceOrder()
+        public Order PlaceOrder()
         {
-            currentOrder.Status = Order.OrderStatus.Active;
-            orders.Add(currentOrder);
+            Order thisOrder = null;
+            if (currentOrder != null && currentOrder.Content.Count > 0)
+            {
+                bool containsTopping = currentOrder.Content.OfType<Topping>().Any();
+                bool containsPizza = currentOrder.Content.OfType<Pizza>().Any();
+                if (containsPizza || !containsTopping)
+                {
+                    currentOrder.TotalCost = CalculateOrderTotalCost(currentOrder);
+                    currentOrder.Status = Order.OrderStatus.Active;
+                    orders.Add(currentOrder);
+                    thisOrder = currentOrder;
+                }
+                ClearOrder();
+            }
+            return thisOrder;
         }
 
         public void ClearOrder()
@@ -74,7 +90,7 @@ namespace CleanCode_Labb3_Pizzerian
             string activeOrders = "";
             foreach (Order order in orders)
             {
-                activeOrders += GetOrderString(order) + "\n";
+                activeOrders += GetOrderString(order) + "\n\n";
             }
             return activeOrders;
         }
@@ -82,29 +98,35 @@ namespace CleanCode_Labb3_Pizzerian
         public string GetOrderString(Order order)
         {
             string orderString = "";
-            orderString += $"ID: {order.ID}\n";
-            orderString += GetOrderContentString(order);
-            orderString += $"Total Cost: {order.TotalCost}";
+            if (order != null && order.Content.Count > 0)
+            {
+                orderString += $"ID: {order.Id}\n";
+                orderString += GetOrderContentString(order);
+                orderString += $"Total Cost: {order.TotalCost}";
+            }
             return orderString;
         }
 
         public string GetOrderContentString(Order order)
         {
             string contentString = "";
-            var pizzas = order.Content.Where(item => item is Pizza).ToList();
-            foreach(Pizza pizza in pizzas)
+            if (order != null && order.Content.Count > 0)
             {
-                contentString += PizzaToString(pizza);
-            }
-            var drinks = order.Content.Where(item => item is Drink).ToList();
-            foreach (Drink drink in drinks)
-            {
-                contentString += DrinkToString(drink);
-            }
-            var extras = order.Content.Where(item => item is Topping).ToList();
-            foreach (Topping extra in extras)
-            {
-                contentString += ToppingToString(extra);
+                var pizzas = order.Content.Where(item => item is Pizza).ToList();
+                foreach(Pizza pizza in pizzas)
+                {
+                    contentString += OrdablesToString.OrdableToString(pizza);
+                }
+                var drinks = order.Content.Where(item => item is Drink).ToList();
+                foreach (Drink drink in drinks)
+                {
+                    contentString += OrdablesToString.OrdableToString(drink);
+                }
+                var extras = order.Content.Where(item => item is Topping).ToList();
+                foreach (Topping extra in extras)
+                {
+                    contentString += OrdablesToString.OrdableToString(extra);
+                }
             }
             return contentString;
         }
@@ -112,35 +134,9 @@ namespace CleanCode_Labb3_Pizzerian
         private void CreateNewOrder()
         {
             currentOrder = new Order();
+            currentOrder.Id = orderIdCounter;
+            orderIdCounter++;
             currentOrder.Content = new List<IOrdable>();
-        }
-
-        public string ToppingToString(Topping topping)
-        {
-            string toppingString = "";
-            toppingString += (topping.Name + ":");
-            toppingString += (" - " + topping.Cost + "kr\n");
-            return toppingString;
-        }
-
-        public string DrinkToString(Drink drink)
-        {
-            string drinkString = "";
-            drinkString += (drink.Name + ":");
-            drinkString += (" - " + drink.Cost + "kr\n");
-            return drinkString;
-        }
-
-        public string PizzaToString(Pizza pizza)
-        {
-            string pizzaString = "";
-            pizzaString += (pizza.Name + ":");
-            foreach (Topping topping in pizza.Toppings)
-            {
-                pizzaString += (" " + topping.Name + ",");
-            }
-            pizzaString += (" - " + pizza.Cost + "kr\n");
-            return pizzaString;
         }
     }
 }

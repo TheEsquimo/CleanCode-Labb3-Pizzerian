@@ -4,13 +4,13 @@ using System.Text;
 
 namespace CleanCode_Labb3_Pizzerian
 {
-    public sealed class MenuContentBuilder
+    public sealed class MenuContentCreator
     {
-        public static MenuContentBuilder MenuBuilderInstance { get { return menuBuilderInstance; } }
-        private static readonly MenuContentBuilder menuBuilderInstance = new MenuContentBuilder();
+        public static MenuContentCreator MenuContentInstance { get { return menuContentInstance; } }
+        private static readonly MenuContentCreator menuContentInstance = new MenuContentCreator();
         
-        static MenuContentBuilder() { }
-        private MenuContentBuilder() { }
+        static MenuContentCreator() { }
+        private MenuContentCreator() { }
 
         public List<IOrdable> GetStandardMenu()
         {
@@ -46,7 +46,6 @@ namespace CleanCode_Labb3_Pizzerian
             List<ToppingBuilder> toppingBuilders = new List<ToppingBuilder>()
             {
                 new ArtichokeTopping(),
-                new CheeseTopping(),
                 new ClamTopping(),
                 new CorianderTopping(),
                 new HamTopping(),
@@ -55,7 +54,6 @@ namespace CleanCode_Labb3_Pizzerian
                 new OnionTopping(),
                 new PineappleTopping(),
                 new ShrimpTopping(),
-                new TomatoSauceTopping()
             };
             foreach (ToppingBuilder toppingBuilder in toppingBuilders)
             {
