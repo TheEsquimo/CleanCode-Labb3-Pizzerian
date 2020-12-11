@@ -19,7 +19,7 @@ namespace CleanCode_Labb3_PizzerianTestsNUnit
         [TearDown]
         public void TearDown()
         {
-            orderManager.CurrentOrder.Content = null;
+            orderManager.ClearOrder();
         }
 
         [Test]
@@ -82,6 +82,42 @@ namespace CleanCode_Labb3_PizzerianTestsNUnit
             Topping topping = new Topping();
             orderManager.AddItemToOrder(topping);
             Assert.Contains(topping, orderManager.CurrentOrder.Content);
+        }
+
+        [Test]
+        public void TestCantPlaceOrderWithToppingWithoutPizza()
+        {
+            Pizza pizza = new Pizza();
+            orderManager.AddItemToOrder(pizza);
+            orderManager.AddItemToOrder(new Topping());
+            orderManager.RemoveItemFromOrder(pizza);
+            Order placedOrder = orderManager.PlaceOrder();
+            Assert.AreEqual(null, placedOrder);
+        }
+
+        [Test]
+        public void CanPlaceOrderWithDrinkOnly()
+        {
+            Drink drink = new Drink();
+            orderManager.AddItemToOrder(drink);
+            Order placedOrder = orderManager.PlaceOrder();
+            Assert.Contains(drink, placedOrder.Content);
+        }
+
+        [Test]
+        public void SetOrderStatusToCompleted()
+        {
+            Order order = new Order();
+            orderManager.SetOrderStatus(order, Order.OrderStatus.Completed);
+            Assert.AreEqual(Order.OrderStatus.Completed, order.Status);
+        }
+
+        [Test]
+        public void SetOrderStatusToCanceled()
+        {
+            Order order = new Order();
+            orderManager.SetOrderStatus(order, Order.OrderStatus.Canceled);
+            Assert.AreEqual(Order.OrderStatus.Canceled, order.Status);
         }
     }
 }

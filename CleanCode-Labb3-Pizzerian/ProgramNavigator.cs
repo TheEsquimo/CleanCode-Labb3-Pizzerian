@@ -100,6 +100,35 @@ namespace CleanCode_Labb3_Pizzerian
             }
         }
 
+        private void SetOrderStatusMenu()
+        {
+            if (orderManager.Orders != null && orderManager.Orders.Count > 0)
+            {
+                Order[] activeOrders = orderManager.Orders.
+                    Where(order => order.Status == Order.OrderStatus.Active).ToArray();
+
+                if (activeOrders.Length > 0)
+                {
+                    Console.WriteLine("=====CHOOSE ORDER TO MODIFY=====");
+                    PrintActiveOrders();
+                    Console.WriteLine("Enter ID to modify corresponding order's status");
+
+                    List<string> validInput = new List<string>();
+                    foreach (Order order in activeOrders)
+                    {
+                        validInput.Add(order.Id.ToString());
+                    }
+                    userInput = GetUserInput(validInput.ToArray());
+
+                    Order chosenOrder = activeOrders.
+                        Where(order => order.Id == int.Parse(userInput)).
+                        First();
+
+                    SetOrderStatus(chosenOrder);
+                }
+            }
+        }
+
         private void PrintMenu()
         {
             Console.WriteLine("=====ORDER MENU=====");
@@ -119,7 +148,6 @@ namespace CleanCode_Labb3_Pizzerian
         {
             Console.WriteLine("=====ORDERS=====");
             Console.WriteLine(orderManager.GetActiveOrders());
-            Console.ReadKey();
         }
 
         private void AddItemToOrder()
@@ -167,6 +195,7 @@ namespace CleanCode_Labb3_Pizzerian
         private void ClearOrder()
         {
             orderManager.ClearOrder();
+            OrderMenu();
         }
 
         private void PlaceOrder()
@@ -178,35 +207,6 @@ namespace CleanCode_Labb3_Pizzerian
                 Console.WriteLine(orderManager.GetOrderString(placedOrder));
             }
             Console.ReadKey();
-        }
-
-        private void SetOrderStatusMenu()
-        {
-            if (orderManager.Orders != null && orderManager.Orders.Count > 0)
-            {
-                Order[] activeOrders = orderManager.Orders.
-                    Where(order => order.Status == Order.OrderStatus.Active).ToArray();
-
-                if (activeOrders.Length > 0)
-                {
-                    Console.WriteLine("=====CHOOSE ORDER TO MODIFY=====");
-                    PrintActiveOrders();
-                    Console.WriteLine("Enter ID to modify corresponding order's status");
-
-                    List<string> validInput = new List<string>();
-                    foreach (Order order in activeOrders)
-                    {
-                        validInput.Add(order.Id.ToString());
-                    }
-                    userInput = GetUserInput(validInput.ToArray());
-
-                    Order chosenOrder = activeOrders.
-                        Where(order => order.Id == int.Parse(userInput)).
-                        First();
-
-                    SetOrderStatus(chosenOrder);
-                }
-            }
         }
 
         private void SetOrderStatus(Order chosenOrder)
